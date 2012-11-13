@@ -1,0 +1,23 @@
+{% extends 'layout/base.html' %}
+
+{% block 'content' %}
+{% for article in articles %}
+    {% include 'article/single_article_block.html' %}
+    {% comment %}
+    <article>
+        <h1>
+            <a href="{% url single-article article.slug %}">{{ article.title }}</a>
+                {% if user.is_admin %}
+                    <span>
+                        <a href="{% url edit-article article.key %}">Edit</a>
+                    </span>
+                {% endif %}
+        </h1>
+    </article>
+    {% endcomment %}
+{% empty %}
+    <article>
+        <h1>No articles found.</h1>
+    </article>
+{% endfor %}
+{% endblock %}

@@ -1,12 +1,13 @@
 import os
 import sys
 
+from django.template import add_to_builtins
+
 APPENGINE_PRODUCTION = os.getenv('APPENGINE_PRODUCTION')
 
 HTTP_HOST = os.environ.get('HTTP_HOST')
 
 PROJDIR = os.path.abspath(os.path.dirname(__file__))
-APPDIR = os.path.join(PROJDIR, 'core')
 
 DEBUG = not APPENGINE_PRODUCTION
 TEMPLATE_DEBUG = DEBUG
@@ -90,6 +91,9 @@ USE_I18N = True
 # calendars according to the current locale
 USE_L10N = True
 
+# Use the new automatic timezone features Django 1.4 brings
+USE_TZ = True
+
 # Absolute filesystem path to the directory that will hold user-uploaded files.
 # Example: "/home/media/media.lawrence.com/media/"
 MEDIA_ROOT = ''
@@ -103,7 +107,7 @@ MEDIA_URL = ''
 # Don't put anything in this directory yourself; store your static files
 # in apps' "static/" subdirectories and in STATICFILES_DIRS.
 # Example: "/home/media/media.lawrence.com/static/"
-STATIC_ROOT = ''
+STATIC_ROOT = os.path.join(PROJDIR, 'static_root')
 
 # URL prefix for static files.
 # Example: "http://media.lawrence.com/static/"
@@ -116,6 +120,7 @@ ADMIN_MEDIA_PREFIX = '/static/admin/'
 
 # Additional locations of static files
 STATICFILES_DIRS = (
+    os.path.join(PROJDIR, 'static'),
     # Put strings here, like "/home/html/static" or "C:/www/django/static".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
@@ -143,23 +148,37 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.common.CommonMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
-    'django.contrib.auth.middleware.AuthenticationMiddleware',
+    #'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
+    'core.middleware.common.RequestMiddleware',
+)
+
+TEMPLATE_CONTEXT_PROCESSORS = (
+    #'django.contrib.auth.context_processors.auth',
+    'core.context_processors.auth',
+    'django.core.context_processors.debug',
+    'django.core.context_processors.i18n',
+    'django.core.context_processors.media',
+    'django.core.context_processors.static',
+    'django.core.context_processors.tz',
+#    'django.core.context_processors.request',
+    'django.contrib.messages.context_processors.messages',
 )
 
 ROOT_URLCONF = 'urls'
 
 TEMPLATE_DIRS = (
+    os.path.join(PROJDIR, 'templates'),
     # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
 )
 
 INSTALLED_APPS = (
-    'django.contrib.auth',
-    'django.contrib.contenttypes',
+    #'django.contrib.auth',
+    #'django.contrib.contenttypes',
     'django.contrib.sessions',
-    'django.contrib.sites',
+    #'django.contrib.sites',
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'core',
@@ -167,6 +186,7 @@ INSTALLED_APPS = (
     # 'django.contrib.admin',
     # Uncomment the next line to enable admin documentation:
     # 'django.contrib.admindocs',
+    'article',
 )
 
 # A sample logging configuration. The only tangible logging
@@ -191,3 +211,5 @@ LOGGING = {
         },
     }
 }
+
+add_to_builtins('django.templatetags.i18n')

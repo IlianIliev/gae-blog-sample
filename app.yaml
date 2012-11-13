@@ -1,4 +1,4 @@
-application: djappeng1ne
+application: gae-blog-sample
 version: 1
 runtime: python27
 api_version: 1
@@ -6,7 +6,7 @@ threadsafe: true
 
 libraries:
 - name: django
-  version: "1.3"
+  version: "1.4"
 
 inbound_services:
 - warmup
@@ -14,13 +14,21 @@ inbound_services:
 handlers:
 
 - url: /static
-  static_dir: core/static
+  static_dir: static_root
   expiration: '1m'
 
 - url: /favicon.ico
   static_files: favicon.ico
   upload: favicon.ico
 
-
 - url: /.*
   script: main.app
+
+skip_files:
+- ^(.*/)?app.yaml
+- ^(.*/)?app.yml
+- ^(.*/)?index.yaml
+- ^(.*/)?index.yml
+- ^(.*/)?.*\.py[co]
+- ^(.*/)?\..*
+- tmp

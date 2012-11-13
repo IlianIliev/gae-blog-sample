@@ -1,0 +1,9 @@
+{% block 'content' %}
+<article {% if not forloop or forloop.last %}class="last"{% endif %}>
+    <h1>
+        <a href="{% url single-article article.slug %}">{{ article.title }}</a>
+        <span>{{ article.publish_date|date:'d-m-Y H:i' }}</span>
+    </h1>
+    {{ article.content|safe }}
+</article>
+{% endblock %}

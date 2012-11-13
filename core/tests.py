@@ -1,11 +1,13 @@
-from pypath import pypath;pypath()
 import unittest
+
 from google.appengine.api import memcache
 from google.appengine.ext import db
 from google.appengine.ext import testbed
 
+from ndbtestcase import NdbTestCase
 
-class ATestSuit(unittest.TestCase):
+
+class ATestCase(NdbTestCase):
 
     def setUp(self):
         self.param = 1

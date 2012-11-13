@@ -1,0 +1,25 @@
+{% extends 'layout/base.html' %}
+
+{% block 'content' %}
+
+{% if messages %}
+<ul class="messages">
+    {% for message in messages %}
+    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+    {% endfor %}
+</ul>
+{% endif %}
+
+{% for article in articles %}
+    <article>
+        <h1>
+            <a href="{% url edit-article article.key %}">{{ article.title }}</a>
+            <span>
+                {{ article.published|yesno:'Published,Draft' }} |
+                <a href="{% url edit-article article.key %}">{% trans 'Edit' %}</a> |
+                <a href="{% url delete-article article.key %}">{% trans 'Delete' %}</a>
+            </span>
+        </h1>
+    </article>
+{% endfor %}
+{% endblock %}

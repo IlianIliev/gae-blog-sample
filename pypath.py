@@ -22,7 +22,7 @@ def pypath():
 
             # Load config from app.yaml
             appinfo, _, _ = tools.dev_appserver.LoadAppConfig(
-                os.path.normpath(os.path.abspath('.')) {}, default_partition='dev')
+                os.path.normpath(os.path.abspath('.')), default_partition='dev')
 
             fix_sys_path()
 

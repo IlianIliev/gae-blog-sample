@@ -1,0 +1,11 @@
+{% extends 'layout/base.html' %}
+
+{% block 'content' %}
+
+<form id="delete_article" method="post">
+    {% csrf_token %}
+    Are you sure you want to delete article: {{ article }}?
+    <input type="submit" value="yes" />
+    <a href="{% url list-articles %}">{% trans 'No' %}</a>
+</form>
+{% endblock %}
